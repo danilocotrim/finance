@@ -62,7 +62,7 @@ async function loadMarketIndices() {
 
     for (const index of indices) {
         try {
-            const url = `${API_CONFIG.BASE_URL}/quote/${index.symbol}?token=${API_CONFIG.TOKEN}&range=1d&interval=1d`;
+            const url = `${API_CONFIG.BASE_URL}/quote/${index.symbol}?token=${API_CONFIG.TOKEN}&range=1d&interval=1d&fundamental=false`;
             const response = await fetch(url);
 
             if (!response.ok) throw new Error('Falha na requisição');
@@ -83,32 +83,26 @@ async function loadMarketIndices() {
 
     // USD/BRL (Moedas geralmente funcionam bem)
     try {
+        // Usando endpoint v2 que é mais estável para moedas
         const url = `${API_CONFIG.BASE_URL}/v2/currency?currency=USD-BRL&token=${API_CONFIG.TOKEN}`;
         const response = await fetch(url);
         const data = await response.json();
+        
+        // Verificação detalhada dos campos retornados pela API
         if (data.currency && data.currency[0]) {
-             // Adaptar formato da API de moedas para o formato do card
+             const moeda = data.currency[0];
+             // O campo pode vir como 'bidPrice' ou 'askPrice' dependendo da API
+             const preco = parseFloat(moeda.bidPrice || moeda.askPrice || 0);
+             const variacao = parseFloat(moeda.bidChangePercent || moeda.askChangePercent || 0);
+             
              const currencyData = {
-                 regularMarketPrice: parseFloat(data.currency[0].bidPrice),
-                 regularMarketChangePercent: parseFloat(data.currency[0].bidChangePercent)
+                 regularMarketPrice: preco,
+                 regularMarketChangePercent: variacao
              };
              updateIndexCard('usd', currencyData);
         }
     } catch (error) {
         console.error('Erro ao carregar USD/BRL:', error);
-    }
-}
-
-async function loadBackupIndex(id, ticker) {
-    try {
-        const url = `${API_CONFIG.BASE_URL}/quote/${ticker}?token=${API_CONFIG.TOKEN}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data.results && data.results[0]) {
-            updateIndexCard(id, data.results[0]);
-        }
-    } catch(e) {
-        console.error(`Erro fatal no índice ${id}`, e);
     }
 }
 
@@ -207,7 +201,7 @@ async function loadScreenerData() {
     try {
         const tickers = TOP_STOCKS.map(s => s.ticker).join(',');
         // Requisição em lote (muito mais eficiente)
-        const url = `${API_CONFIG.BASE_URL}/quote/${tickers}?token=${API_CONFIG.TOKEN}`;
+        const url = `${API_CONFIG.BASE_URL}/quote/${tickers}?token=${API_CONFIG.TOKEN}&range=1d&interval=1d&fundamental=false`;
         const response = await fetch(url);
         const data = await response.json();
 
