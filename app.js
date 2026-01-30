@@ -2,7 +2,7 @@
 const API_CONFIG = {
     BASE_URL: 'https://brapi.dev/api',
     // Substitua abaixo pelo seu token real
-    TOKEN: 'SEU_TOKEN_AQUI' 
+    TOKEN: '4M8EUKCCwQkQf98MrtwpyF' 
 };
 
 // Principais ações brasileiras (Plano gratuito geralmente libera as blue chips)
