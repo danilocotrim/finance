@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance BR - Mercado Brasileiro em Tempo Real</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Finance BR</h1>
+            <nav>
+                <a href="#overview">Visão Geral</a>
+                <a href="#stocks">Ações</a>
+                <a href="#screener">Screener</a>
+                <a href="#news">Notícias</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Índices Principais -->
+        <section id="overview" class="market-overview">
+            <h2>Mercado Brasileiro</h2>
+            <div class="indices-grid">
+                <div class="index-card" data-symbol="^BVSP">
+                    <h3>IBOVESPA</h3>
+                    <p class="price" id="ibov-price">--</p>
+                    <p class="change" id="ibov-change">--</p>
+                </div>
+                <div class="index-card" data-symbol="IBRX.SA">
+                    <h3>IBRX 100</h3>
+                    <p class="price" id="ibrx-price">--</p>
+                    <p class="change" id="ibrx-change">--</p>
+                </div>
+                <div class="index-card" data-symbol="SMLL.SA">
+                    <h3>SMLL (Small Caps)</h3>
+                    <p class="price" id="smll-price">--</p>
+                    <p class="change" id="smll-change">--</p>
+                </div>
+                <div class="index-card" data-symbol="USDBRL=X">
+                    <h3>USD/BRL</h3>
+                    <p class="price" id="usd-price">--</p>
+                    <p class="change" id="usd-change">--</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Busca de Ações -->
+        <section id="stocks" class="stock-search">
+            <h2>Buscar Ações</h2>
+            <div class="search-container">
+                <input type="text" id="stock-search-input" placeholder="Digite o ticker (ex: PETR4, VALE3, ITUB4)">
+                <button id="search-btn">Buscar</button>
+            </div>
+            <div id="stock-result" class="stock-detail"></div>
+        </section>
+
+        <!-- Stock Screener -->
+        <section id="screener" class="screener">
+            <h2>Stock Screener</h2>
+            <div class="filters">
+                <select id="sector-filter">
+                    <option value="">Todos os Setores</option>
+                    <option value="financeiro">Financeiro</option>
+                    <option value="energia">Energia</option>
+                    <option value="mineracao">Mineração</option>
+                    <option value="varejo">Varejo</option>
+                </select>
+                <input type="number" id="min-price" placeholder="Preço mín.">
+                <input type="number" id="max-price" placeholder="Preço máx.">
+                <button id="filter-btn">Filtrar</button>
+            </div>
+            <table id="screener-table">
+                <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Empresa</th>
+                        <th>Preço</th>
+                        <th>Variação %</th>
+                        <th>Volume</th>
+                    </tr>
+                </thead>
+                <tbody id="screener-results"></tbody>
+            </table>
+        </section>
+
+        <!-- Notícias do Mercado -->
+        <section id="news" class="news-section">
+            <h2>Notícias do Mercado</h2>
+            <div id="news-container" class="news-grid"></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
